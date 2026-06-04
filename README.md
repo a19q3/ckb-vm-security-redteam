@@ -2,13 +2,34 @@
 
 `ckb-vm-security-redteam` is a security red-team skill for adversarial testing of the CKB-VM RISC-V virtual machine.
 
-As CellScript becomes increasingly mature, my recent work has focused on on-chain acceptance gates, security, auditability, and verification across the stack. CKB-VM is the execution foundation beneath CellScript, so strengthening the VM also strengthens the language-to-VM ecosystem.
-
 This skill is designed to make CKB-VM security review more systematic, reproducible, and easier for the community to improve.
 
 ## Workflow
 
-![CKB-VM red-team workflow](reports/assets/ckb-vm-redteam-workflow.svg)
+```mermaid
+flowchart TD
+    A["Start from ckb-vm checkout"] --> B["Run baseline tests"]
+    B --> C["Run ASM-enabled tests if supported"]
+    C --> D["Static analysis quick scan"]
+
+    D --> E["ELF loader probes"]
+    D --> F["Memory and WXorX probes"]
+    D --> G["Instruction and AMO probes"]
+    D --> H["Snapshot and resume probes"]
+
+    E --> I["Build external adversarial harnesses"]
+    F --> I
+    G --> I
+    H --> I
+
+    I --> J["Collect concrete evidence"]
+    J --> K["Classify severity"]
+    K --> L["Write findings report"]
+
+    L --> M["Mark false positives clearly"]
+    L --> N["Add reusable test patterns"]
+    N --> O["Improve the skill"]
+```
 
 ## What It Covers
 
