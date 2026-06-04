@@ -1,0 +1,172 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1120" viewBox="0 0 1600 1120" role="img" aria-labelledby="title desc">
+  <title id="title">CKB-VM Security Red-Team Skill Workflow</title>
+  <desc id="desc">A detailed workflow diagram for the ckb-vm-security-redteam skill, showing setup, validation, attack-surface probes, evidence collection, reporting, and community improvement loops.</desc>
+  <defs>
+    <style>
+      .bg { fill: #f7f8f4; }
+      .ink { fill: #1e2528; }
+      .muted { fill: #536067; }
+      .line { stroke: #344148; stroke-width: 2.4; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+      .line-soft { stroke: #839098; stroke-width: 1.6; fill: none; stroke-linecap: round; stroke-dasharray: 8 8; }
+      .arrow { marker-end: url(#arrow); }
+      .card { fill: #ffffff; stroke: #27343a; stroke-width: 2; }
+      .card-soft { fill: #ffffff; stroke: #8e9aa0; stroke-width: 1.4; }
+      .phase { font: 700 19px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #1e2528; letter-spacing: 0; }
+      .label { font: 700 25px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #1e2528; letter-spacing: 0; }
+      .text { font: 500 17px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #2c363b; letter-spacing: 0; }
+      .small { font: 500 14px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #536067; letter-spacing: 0; }
+      .tiny { font: 600 12px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #536067; letter-spacing: 0; }
+      .code { font: 600 14px "SFMono-Regular", Consolas, "Liberation Mono", monospace; fill: #27343a; letter-spacing: 0; }
+      .pill { fill: #edf2ef; stroke: #9baaa2; stroke-width: 1.2; }
+      .accent-elf { fill: #e7f2ff; stroke: #3574a6; }
+      .accent-mem { fill: #eff5e8; stroke: #5f7d37; }
+      .accent-inst { fill: #fff0dd; stroke: #a66b24; }
+      .accent-snap { fill: #f2ecff; stroke: #7354a6; }
+      .accent-report { fill: #f8ecea; stroke: #9b4d45; }
+      .header-rule { stroke: #1e2528; stroke-width: 3; }
+    </style>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#344148"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1600" height="1120"/>
+
+  <g transform="translate(70 58)">
+    <text class="tiny" x="0" y="0">CKB-VM SECURITY RED-TEAM SKILL</text>
+    <text class="label" x="0" y="46">From Checkout To Verified Findings</text>
+    <text class="text" x="0" y="78">A practical workflow for adversarial testing of the CKB-VM RISC-V virtual machine.</text>
+    <line class="header-rule" x1="0" y1="110" x2="1460" y2="110"/>
+  </g>
+
+  <g transform="translate(70 170)">
+    <rect class="card" x="0" y="0" width="310" height="170" rx="8"/>
+    <text class="phase" x="24" y="36">1. Start From Target</text>
+    <text class="text" x="24" y="72">Use the supplied ckb-vm checkout.</text>
+    <text class="small" x="24" y="100">Keep the VM repo read-only during audit.</text>
+    <rect class="pill" x="24" y="122" width="174" height="28" rx="14"/>
+    <text class="code" x="38" y="141">git rev-parse HEAD</text>
+  </g>
+
+  <g transform="translate(450 170)">
+    <rect class="card" x="0" y="0" width="310" height="170" rx="8"/>
+    <text class="phase" x="24" y="36">2. Baseline Validation</text>
+    <text class="text" x="24" y="72">Confirm existing behaviour first.</text>
+    <text class="small" x="24" y="100">Run Rust tests and ASM tests when available.</text>
+    <rect class="pill" x="24" y="122" width="112" height="28" rx="14"/>
+    <text class="code" x="38" y="141">cargo test</text>
+    <rect class="pill" x="146" y="122" width="206" height="28" rx="14"/>
+    <text class="code" x="160" y="141">--features detect-asm</text>
+  </g>
+
+  <g transform="translate(830 170)">
+    <rect class="card" x="0" y="0" width="310" height="170" rx="8"/>
+    <text class="phase" x="24" y="36">3. Static Triage</text>
+    <text class="text" x="24" y="72">Find high-risk code paths quickly.</text>
+    <text class="small" x="24" y="100">unsafe, unwrap, casts, wrapping arithmetic.</text>
+    <rect class="pill" x="24" y="122" width="78" height="28" rx="14"/>
+    <text class="code" x="43" y="141">rg</text>
+    <rect class="pill" x="112" y="122" width="148" height="28" rx="14"/>
+    <text class="code" x="127" y="141">src/elf.rs</text>
+  </g>
+
+  <g transform="translate(1210 170)">
+    <rect class="card" x="0" y="0" width="310" height="170" rx="8"/>
+    <text class="phase" x="24" y="36">4. Quick-Win Probes</text>
+    <text class="text" x="24" y="72">Prioritise fast, reproducible cases.</text>
+    <text class="small" x="24" y="100">ELF metadata, WXorX, LR/SC, snapshots.</text>
+    <rect class="pill" x="24" y="122" width="208" height="28" rx="14"/>
+    <text class="code" x="38" y="141">external harnesses</text>
+  </g>
+
+  <path class="line arrow" d="M380 255 H440"/>
+  <path class="line arrow" d="M760 255 H820"/>
+  <path class="line arrow" d="M1140 255 H1200"/>
+
+  <g transform="translate(130 430)">
+    <rect class="card-soft accent-elf" x="0" y="0" width="300" height="210" rx="8"/>
+    <text class="phase" x="22" y="36">ELF Loader</text>
+    <text class="small" x="22" y="68">Malformed executable metadata</text>
+    <text class="text" x="22" y="104">- entry outside segments</text>
+    <text class="text" x="22" y="132">- p_filesz &gt; p_memsz</text>
+    <text class="text" x="22" y="160">- zero p_memsz, non-zero file</text>
+    <text class="text" x="22" y="188">- address and page rounding overflow</text>
+  </g>
+
+  <g transform="translate(470 430)">
+    <rect class="card-soft accent-mem" x="0" y="0" width="300" height="210" rx="8"/>
+    <text class="phase" x="22" y="36">Memory / WXorX</text>
+    <text class="small" x="22" y="68">Permission and bounds invariants</text>
+    <text class="text" x="22" y="104">- write-to-executable rejection</text>
+    <text class="text" x="22" y="132">- cross-page load/store bounds</text>
+    <text class="text" x="22" y="160">- flag consistency</text>
+    <text class="text" x="22" y="188">- constructor panic contracts</text>
+  </g>
+
+  <g transform="translate(810 430)">
+    <rect class="card-soft accent-inst" x="0" y="0" width="300" height="210" rx="8"/>
+    <text class="phase" x="22" y="36">Instructions / AMO</text>
+    <text class="small" x="22" y="68">Execution edge cases</text>
+    <text class="text" x="22" y="104">- LR/SC reservation semantics</text>
+    <text class="text" x="22" y="132">- failed SC dirty-page behaviour</text>
+    <text class="text" x="22" y="160">- shift masking and bit ops</text>
+    <text class="text" x="22" y="188">- syscall cycle accounting</text>
+  </g>
+
+  <g transform="translate(1150 430)">
+    <rect class="card-soft accent-snap" x="0" y="0" width="300" height="210" rx="8"/>
+    <text class="phase" x="22" y="36">Snapshot / ASM</text>
+    <text class="small" x="22" y="68">Consensus and backend agreement</text>
+    <text class="text" x="22" y="104">- LR saved across resume</text>
+    <text class="text" x="22" y="132">- dirty/source page tracking</text>
+    <text class="text" x="22" y="160">- interpreter vs ASM results</text>
+    <text class="text" x="22" y="188">- pause and reset consistency</text>
+  </g>
+
+  <path class="line arrow" d="M1365 340 V420"/>
+  <path class="line arrow" d="M1365 340 C1365 380 300 380 300 420"/>
+  <path class="line arrow" d="M1365 340 C1365 395 640 395 640 420"/>
+  <path class="line arrow" d="M1365 340 C1365 405 980 405 980 420"/>
+
+  <g transform="translate(210 735)">
+    <rect class="card" x="0" y="0" width="360" height="170" rx="8"/>
+    <text class="phase" x="24" y="38">5. Evidence Collection</text>
+    <text class="text" x="24" y="76">Record exact command output and harness output.</text>
+    <text class="small" x="24" y="106">Include branch, commit, file lines, and reproduction notes.</text>
+    <rect class="pill" x="24" y="128" width="230" height="28" rx="14"/>
+    <text class="code" x="38" y="147">parse_elf / load_elf / step</text>
+  </g>
+
+  <g transform="translate(650 735)">
+    <rect class="card accent-report" x="0" y="0" width="360" height="170" rx="8"/>
+    <text class="phase" x="24" y="38">6. Findings Report</text>
+    <text class="text" x="24" y="76">Classify severity and separate false positives.</text>
+    <text class="small" x="24" y="106">Initial verified findings already live under reports/.</text>
+    <rect class="pill" x="24" y="128" width="220" height="28" rx="14"/>
+    <text class="code" x="38" y="147">reports/FINDINGS-*.md</text>
+  </g>
+
+  <g transform="translate(1090 735)">
+    <rect class="card" x="0" y="0" width="360" height="170" rx="8"/>
+    <text class="phase" x="24" y="38">7. Skill Improvement Loop</text>
+    <text class="text" x="24" y="76">Turn lessons into reusable API notes and scaffolds.</text>
+    <text class="small" x="24" y="106">Invite better probes, fuzz targets, and corrections.</text>
+    <rect class="pill" x="24" y="128" width="212" height="28" rx="14"/>
+    <text class="code" x="38" y="147">skill/references/*.md</text>
+  </g>
+
+  <path class="line arrow" d="M300 640 V725"/>
+  <path class="line arrow" d="M640 640 C640 690 390 690 390 725"/>
+  <path class="line arrow" d="M980 640 C980 690 830 690 830 725"/>
+  <path class="line arrow" d="M1320 640 C1320 690 1270 690 1270 725"/>
+  <path class="line arrow" d="M570 820 H640"/>
+  <path class="line arrow" d="M1010 820 H1080"/>
+
+  <g transform="translate(70 980)">
+    <rect class="card-soft" x="0" y="0" width="1460" height="72" rx="8"/>
+    <text class="phase" x="24" y="30">Community Contributions Welcome</text>
+    <text class="text" x="24" y="54">Improve adversarial test cases, ELF mutation strategies, fuzz targets, ASM differentials, snapshot probes, reporting templates, and false-positive corrections.</text>
+  </g>
+
+  <path class="line-soft" d="M1270 905 C1270 955 1500 955 1500 255 C1500 125 225 125 225 170"/>
+</svg>
